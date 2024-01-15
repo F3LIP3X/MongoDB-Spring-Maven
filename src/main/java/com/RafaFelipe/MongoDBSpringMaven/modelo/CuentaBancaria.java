@@ -25,6 +25,46 @@ public class CuentaBancaria {
 		this.fechaApertura = fechaApertura;
 		this.existente = existente;
 	}
+
+	public int getnCuenta() {
+		return nCuenta;
+	}
+
+	public void setnCuenta(int nCuenta) {
+		this.nCuenta = nCuenta;
+	}
+
+	public String getListaTitulareString() {
+		return listaTitulareString;
+	}
+
+	public void setListaTitulareString(String listaTitulareString) {
+		this.listaTitulareString = listaTitulareString;
+	}
+
+	public double getSaldo() {
+		return saldo;
+	}
+
+	public void setSaldo(double saldo) {
+		this.saldo = saldo;
+	}
+
+	public Date getFechaApertura() {
+		return fechaApertura;
+	}
+
+	public void setFechaApertura(Date fechaApertura) {
+		this.fechaApertura = fechaApertura;
+	}
+
+	public boolean isExistente() {
+		return existente;
+	}
+
+	public void setExistente(boolean existente) {
+		this.existente = existente;
+	}
 	
 	
 }
