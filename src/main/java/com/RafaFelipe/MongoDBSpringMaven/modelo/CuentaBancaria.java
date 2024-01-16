@@ -5,21 +5,22 @@ import java.util.List;
 
 public class CuentaBancaria {
 
-	private String nCuenta;
-	private List<String> listaTitulares;
-	private double saldo;
-	private Date fechaApertura;
-	private boolean existente;
-	
-	public CuentaBancaria(List<String>listaTitulares) {
+	String nCuenta;
+	List<String> listaTitulares;
+	double saldo;
+	Date fechaApertura;
+	boolean existente;
+
+	public CuentaBancaria(List<String> listaTitulares) {
 		this.nCuenta = "";
 		this.listaTitulares = listaTitulares;
 		this.saldo = 0;
 		this.fechaApertura = null;
 		this.existente = false;
 	}
-	
-	public CuentaBancaria(String nCuenta,List<String>listaTitulares, double saldo, Date fechaApertura, boolean existente) {
+
+	public CuentaBancaria(String nCuenta, List<String> listaTitulares, double saldo, Date fechaApertura,
+			boolean existente) {
 		this.nCuenta = nCuenta;
 		this.listaTitulares = listaTitulares;
 		this.saldo = saldo;
@@ -66,6 +67,5 @@ public class CuentaBancaria {
 	public void setExistente(boolean existente) {
 		this.existente = existente;
 	}
-	
-	
+
 }
