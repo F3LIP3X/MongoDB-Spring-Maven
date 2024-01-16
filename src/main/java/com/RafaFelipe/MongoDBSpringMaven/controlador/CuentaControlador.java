@@ -28,8 +28,7 @@ public class CuentaControlador {
     }
 
     @GetMapping("/{fecha_ini}/{fecha_fin}")
-    public List<CuentaBancaria> mostrarCuentasPorRangoDeFecha(@PathVariable("fecha_ini") Date fechaInicio,
-                                                               @PathVariable("fecha_fin") Date fechaFin) {
+    public List<CuentaBancaria> mostrarCuentasPorRangoDeFecha(@PathVariable("fecha_ini") Date fechaInicio,@PathVariable("fecha_fin") Date fechaFin) {
         return cuentaModelo.mostrarCuentasPorRangoDeFecha(fechaInicio, fechaFin);
     }
 
