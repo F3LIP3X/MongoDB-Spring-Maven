@@ -1,45 +1,46 @@
 package com.RafaFelipe.MongoDBSpringMaven.modelo;
 
 import java.sql.Date;
+import java.util.List;
 
 public class CuentaBancaria {
 
-	private int nCuenta;
-	private String listaTitulareString;
+	private String nCuenta;
+	private List<String> listaTitulares;
 	private double saldo;
 	private Date fechaApertura;
 	private boolean existente;
 	
-	public CuentaBancaria() {
-		this.nCuenta = 0;
-		this.listaTitulareString = "";
-		this.saldo = 0.0;
+	public CuentaBancaria(List<String>listaTitulares) {
+		this.nCuenta = "";
+		this.listaTitulares = listaTitulares;
+		this.saldo = 0;
 		this.fechaApertura = null;
-		this.existente = true;
+		this.existente = false;
 	}
 	
-	public CuentaBancaria(int nCuenta, String listaTitulareString, double saldo, Date fechaApertura, boolean existente) {
+	public CuentaBancaria(String nCuenta,List<String>listaTitulares, double saldo, Date fechaApertura, boolean existente) {
 		this.nCuenta = nCuenta;
-		this.listaTitulareString = listaTitulareString;
+		this.listaTitulares = listaTitulares;
 		this.saldo = saldo;
 		this.fechaApertura = fechaApertura;
 		this.existente = existente;
 	}
 
-	public int getnCuenta() {
+	public String getnCuenta() {
 		return nCuenta;
 	}
 
-	public void setnCuenta(int nCuenta) {
+	public void setnCuenta(String nCuenta) {
 		this.nCuenta = nCuenta;
 	}
 
-	public String getListaTitulareString() {
-		return listaTitulareString;
+	public List<String> getListaTitulares() {
+		return listaTitulares;
 	}
 
-	public void setListaTitulareString(String listaTitulareString) {
-		this.listaTitulareString = listaTitulareString;
+	public void setListaTitulares(List<String> listaTitulares) {
+		this.listaTitulares = listaTitulares;
 	}
 
 	public double getSaldo() {
