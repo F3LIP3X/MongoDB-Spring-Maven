@@ -1,26 +1,18 @@
 package com.RafaFelipe.MongoDBSpringMaven.modelo;
 
 import java.sql.Date;
-import java.util.List;
+import java.util.ArrayList;
+import org.bson.Document;
 
 public class CuentaBancaria {
 
 	String nCuenta;
-	List<String> listaTitulares;
+	ArrayList<String> listaTitulares;
 	double saldo;
 	Date fechaApertura;
 	boolean existente;
 
-	public CuentaBancaria(List<String> listaTitulares) {
-		this.nCuenta = "";
-		this.listaTitulares = listaTitulares;
-		this.saldo = 0;
-		this.fechaApertura = null;
-		this.existente = false;
-	}
-
-	public CuentaBancaria(String nCuenta, List<String> listaTitulares, double saldo, Date fechaApertura,
-			boolean existente) {
+	public CuentaBancaria(String nCuenta, ArrayList<String> listaTitulares, double saldo, Date fechaApertura,boolean existente) {
 		this.nCuenta = nCuenta;
 		this.listaTitulares = listaTitulares;
 		this.saldo = saldo;
@@ -28,6 +20,13 @@ public class CuentaBancaria {
 		this.existente = existente;
 	}
 
+	public CuentaBancaria(Document cuentaDocumento) {
+        this.nCuenta = cuentaDocumento.getString("numeroCuenta");
+        this.listaTitulares = (ArrayList<String>) cuentaDocumento.get("titulares");
+        this.saldo = cuentaDocumento.get("saldo", Number.class).doubleValue();
+        this.fechaApertura = (Date) cuentaDocumento.getDate("fechaApertura");
+        this.existente = cuentaDocumento.getBoolean("borrada", false);
+    }
 	public String getnCuenta() {
 		return nCuenta;
 	}
@@ -36,11 +35,11 @@ public class CuentaBancaria {
 		this.nCuenta = nCuenta;
 	}
 
-	public List<String> getListaTitulares() {
+	public ArrayList<String> getListaTitulares() {
 		return listaTitulares;
 	}
 
-	public void setListaTitulares(List<String> listaTitulares) {
+	public void setListaTitulares(ArrayList<String> listaTitulares) {
 		this.listaTitulares = listaTitulares;
 	}
 
