@@ -16,5 +16,6 @@ public class CuentaModelo {
 	
 	 MongoClient mongo = new MongoClient("localhost", 27017);
 	 MongoDatabase database = mongo.getDatabase("banco");
+	 
 	 MongoCollection<Document> collection = database.getCollection("cuenta");
 }
