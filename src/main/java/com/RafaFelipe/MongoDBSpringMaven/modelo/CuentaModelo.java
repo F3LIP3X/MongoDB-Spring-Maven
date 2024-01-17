@@ -16,21 +16,22 @@ public class CuentaModelo {
 
 	MongoCollection<Document> doc;
 	
+	
 	public ArrayList<CuentaBancaria> cuenta;
 	
-	MongoClient mongo = new MongoClient("localhost", 27017);
-	MongoDatabase database = mongo.getDatabase("banco");
-	MongoCollection<Document> collection = database.getCollection("cuenta");
-	
-	
 	public ArrayList<CuentaBancaria> mostrarTodasLasCuentas() {
+		cuenta = new ArrayList<>();
+		
+		MongoClient mongo = new MongoClient("localhost", 27017);
 		
 		 try {
+			 MongoDatabase database = mongo.getDatabase("banco");
+			MongoCollection<Document> collection = database.getCollection("cuenta");
+			
 			 Iterator<Document> it = collection.find().iterator();
 				while (it.hasNext()) {
 					Document document = it.next();
 					cuenta.add(new CuentaBancaria(document));
-					System.out.println(document);
 				}
 		 }catch (Exception e) {
 			e.printStackTrace();

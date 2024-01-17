@@ -1,6 +1,6 @@
 package com.RafaFelipe.MongoDBSpringMaven.modelo;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import org.bson.Document;
 
@@ -12,15 +12,16 @@ public class CuentaBancaria {
 	Date fechaApertura;
 	boolean existente;
 
-	public CuentaBancaria(Document cuentaDocumento) {
-        this.nCuenta = cuentaDocumento.getString("numeroCuenta");
-        this.listaTitulares = (ArrayList<String>) cuentaDocumento.get("titulares");
-        this.saldo = cuentaDocumento.get("saldo", Number.class).doubleValue();
-        this.fechaApertura = (Date) cuentaDocumento.getDate("fechaApertura");
-        this.existente = cuentaDocumento.getBoolean("borrada", false);
-        
+	public CuentaBancaria() {
 	}
-    
+
+	public CuentaBancaria(Document cuentaDocumento) {
+        this.nCuenta = cuentaDocumento.getString("NumeroCuenta");
+        this.listaTitulares = (ArrayList<String>) cuentaDocumento.get("ListaTitulares");
+        this.saldo = cuentaDocumento.get("Saldo", Number.class).doubleValue();
+        this.fechaApertura = (Date) cuentaDocumento.getDate("Fecha_Apertura");
+        this.existente = cuentaDocumento.getBoolean("Borrada", false);
+    }
 	public String getnCuenta() {
 		return nCuenta;
 	}
