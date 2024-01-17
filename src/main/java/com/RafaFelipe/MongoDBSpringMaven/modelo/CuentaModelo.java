@@ -15,29 +15,30 @@ import com.mongodb.client.model.Updates;
 public class CuentaModelo {
 
 	MongoCollection<Document> doc;
-	
-	
+
 	public ArrayList<CuentaBancaria> cuenta;
+
 	
+	// Primer Metodo (Falta el condicionande de borrado)
 	public ArrayList<CuentaBancaria> mostrarTodasLasCuentas() {
 		cuenta = new ArrayList<>();
-		
+
 		MongoClient mongo = new MongoClient("localhost", 27017);
-		
-		 try {
-			 MongoDatabase database = mongo.getDatabase("banco");
+
+		try {
+			MongoDatabase database = mongo.getDatabase("banco");
 			MongoCollection<Document> collection = database.getCollection("cuenta");
-			
-			 Iterator<Document> it = collection.find().iterator();
-				while (it.hasNext()) {
-					Document document = it.next();
-					cuenta.add(new CuentaBancaria(document));
-				}
-		 }catch (Exception e) {
+
+			Iterator<Document> it = collection.find().iterator();
+			while (it.hasNext()) {
+				Document document = it.next();
+				cuenta.add(new CuentaBancaria(document));
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			mongo.close();
 		}
 		return cuenta;
-	 }
+	}
 }
