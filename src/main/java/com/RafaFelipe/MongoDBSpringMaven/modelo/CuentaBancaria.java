@@ -10,7 +10,7 @@ public class CuentaBancaria {
 	ArrayList<String> listaTitulares;
 	double saldo;
 	Date fechaApertura;
-	boolean existente;
+	boolean Borrada;
 
 	public CuentaBancaria() {
 	}
@@ -20,7 +20,7 @@ public class CuentaBancaria {
         this.listaTitulares = (ArrayList<String>) cuentaDocumento.get("ListaTitulares");
         this.saldo = cuentaDocumento.get("Saldo", Number.class).doubleValue();
         this.fechaApertura = (Date) cuentaDocumento.getDate("Fecha_Apertura");
-        this.existente = cuentaDocumento.getBoolean("Borrada", false);
+        this.Borrada = cuentaDocumento.getBoolean("Borrada");
     }
 	public String getnCuenta() {
 		return nCuenta;
@@ -55,11 +55,11 @@ public class CuentaBancaria {
 	}
 
 	public boolean isExistente() {
-		return existente;
+		return Borrada;
 	}
 
 	public void setExistente(boolean existente) {
-		this.existente = existente;
+		this.Borrada = existente;
 	}
 
 }
