@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.RafaFelipe.MongoDBSpringMaven.modelo.CuentaBancaria;
@@ -28,4 +30,10 @@ public class CuentaControlador {
 	public ArrayList<CuentaBancaria> mostrarPorFechaApertura(@PathVariable String fechaApertura, @PathVariable String fechaCierre){
 		return cuentitasCuentaModelo.mostrarPorFecha(fechaApertura, fechaCierre);
 	}
+	
+	@PutMapping("banco/cuenta/new")
+	public boolean insertNewCuentaController(@RequestParam String nCuentas, @RequestParam ArrayList<String> titulares, @RequestParam double saldo) {
+		return cuentitasCuentaModelo.insertarCuenta(nCuentas, titulares, saldo);
+	}
+	
 }

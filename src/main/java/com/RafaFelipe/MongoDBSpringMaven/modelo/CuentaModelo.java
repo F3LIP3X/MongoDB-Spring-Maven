@@ -1,5 +1,6 @@
 package com.RafaFelipe.MongoDBSpringMaven.modelo;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -7,6 +8,7 @@ import java.util.Iterator;
 
 import org.bson.Document;
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Sort;
+import org.springframework.cglib.core.EmitUtils.ArrayDelimiters;
 
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
@@ -16,13 +18,14 @@ import com.mongodb.client.model.Sorts;
 
 public class CuentaModelo {
 
+	CuentaBancaria cuentaBancaria;
 	MongoCollection<Document> doc;
-
 	public ArrayList<CuentaBancaria> cuenta;
-
+	Document cuentaModeloDocument;
 	Date fecha1Parse, fecha2Parse;
 	String fechaFormat;
 	Date fecha1Final, fecha2Final;
+	Boolean cuentaCreada = false;
 
 	// Primer Metodo
 	public ArrayList<CuentaBancaria> mostrarTodasLasCuentas() {
@@ -114,4 +117,47 @@ public class CuentaModelo {
 		}
 		return cuenta;
 	}
+	
+	//Cuarto Metodo
+	
+	public boolean insertarCuenta(String nCuentas, ArrayList<String> titulares, double saldo) {
+		cuentaBancaria = new CuentaBancaria();
+		cuenta = new ArrayList<>();
+
+		MongoClient mongo = new MongoClient("localhost", 27017);
+
+		try {
+			MongoDatabase database = mongo.getDatabase("banco");
+			MongoCollection<Document> collection = database.getCollection("cuenta");
+
+			Iterator<Document> it = collection.find(Filters.eq("NumeroCuenta", nCuentas)).iterator();
+			
+			if(!it.hasNext()) {
+				cuentaModeloDocument = new Document()
+						.append("NumeroCuenta", nCuentas)
+						.append("ListaTitulares", titulares)
+						.append("Saldo", saldo)
+						.append("FechaApertura", new Date())
+						.append("Borrada", false);
+				
+				collection.insertOne(cuentaModeloDocument);
+				
+				cuentaCreada = true;
+				
+			}else {
+				
+				cuentaCreada = false;
+				
+			}
+		} catch (Exception e) {
+			cuentaCreada = false;
+			e.printStackTrace();
+		} finally {
+			mongo.close();
+		}
+		return cuentaCreada;
+		
+	}
+	
+	
 }
