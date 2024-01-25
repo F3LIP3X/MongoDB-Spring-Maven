@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,5 +36,10 @@ public class CuentaControlador {
 	public boolean insertNewCuentaController(@RequestParam String nCuentas, @RequestParam ArrayList<String> titulares, @RequestParam double saldo) {
 		return cuentitasCuentaModelo.insertarCuenta(nCuentas, titulares, saldo);
 	}
+	
+	@PutMapping("/banco/cuenta/update/{nCuentas}")
+    public void actualizarCuentaPorNumero(@PathVariable String nCuentas,@RequestBody CuentaBancaria nueva) {
+		cuentitasCuentaModelo.actualizarCuenta(nCuentas, nueva);
+    }
 	
 }
