@@ -93,17 +93,13 @@ public class CuentaModelo {
 			MongoDatabase database = mongo.getDatabase("banco");
 			MongoCollection<Document> collection = database.getCollection("cuenta");
 
-			// Formato Fecha
 			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-			// Parseo de fecha de apertura y cierre
 			fecha1Parse = dateFormat.parse(fechaApertura);
 			fecha2Parse = dateFormat.parse(fechaCierre);
 
-			// Indicamos el formato final de la fecha para JSON
 			SimpleDateFormat finalDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-			// Aplicamos formatos a ambas fechas
 			fechaFormat = finalDateFormat.format(fecha1Parse);
 			fecha1Final = finalDateFormat.parse(fechaFormat);
 
@@ -201,7 +197,7 @@ public class CuentaModelo {
 		cuentaCreada = false;
 		
 		try {
-			collection.deleteMany(Filters.eq("NumeroCuenta", nCuentas));
+			collection.updateOne(Filters.eq("NumeroCuenta", nCuentas), Updates.set("Borrada", true));
 			cuentaCreada=true;
 		}catch (Exception e) {
 			cuentaCreada = true;
@@ -220,18 +216,24 @@ public class CuentaModelo {
 		MongoCollection<Document> collection = database.getCollection("cuenta");
 		estado="";
 		try {
-			saldoAnterior = numeroCuenta.get(0).getSaldo();
-			saldoActualizado = ingreso + saldoAnterior;
+			Iterator<Document> it = collection.find(Filters.eq("NumeroCuenta", nCuentas)).iterator();
 			
-			if(ingreso >= 0.0) {
-				estado = "Se ha realizado un ingreso de " + ingreso + " euros." + "\n"
-						+ "Al numero de cuenta " + nCuentas + " el saldo total es de "
-						+ saldoActualizado;
-				collection.updateOne(Filters.eq("NumeroCuenta", nCuentas),
-						Updates.set("Saldo", saldoActualizado));
-			}else {
-				estado= "Inserte una cantidad valida";
-			}
+			if(it.hasNext()) {
+				Document documento = (Document) it.next();
+				cuentaBancaria = new CuentaBancaria(documento);
+				
+				if(ingreso >= 0.0) {
+					saldoAnterior = cuentaBancaria.getSaldo();
+					saldoActualizado = ingreso + saldoAnterior;		
+					estado = "Se ha realizado un ingreso de " + ingreso + " euros." + "\n"
+							+ "Al numero de cuenta " + nCuentas + " el saldo total es de "
+							+ saldoActualizado;
+					collection.updateOne(Filters.eq("NumeroCuenta", nCuentas),
+							Updates.set("Saldo", saldoActualizado));
+				}else {
+					estado= "Inserte una cantidad valida";
+				}
+			}	
 		}catch (Exception e) {
 			e.printStackTrace();
 			estado= "No ha podido realizarse el ingreso";
@@ -249,24 +251,31 @@ public class CuentaModelo {
 		MongoCollection<Document> collection = database.getCollection("cuenta");
 		estado="";
 		try {
-			saldoAnterior = numeroCuenta.get(0).getSaldo();
-			saldoActualizado = saldoAnterior - retiro;
+			Iterator<Document> it = collection.find(Filters.eq("NumeroCuenta", nCuentas)).iterator();
 			
-			if(retiro > 0.0 && saldoActualizado > 0) {
-				estado = "Se ha realizado un retiro de " + retiro + " euros." + "\n"
-						+ "Al numero de cuenta " + nCuentas + " el saldo toal es de "
-						+ saldoActualizado;
-				collection.updateOne(Filters.eq("NumeroCuenta", nCuentas),
-						Updates.set("Saldo", saldoActualizado));
-			}else if(retiro > 0.0 && saldoActualizado < 0) {
-				saldoActualizado = 0.0;
-				estado = "El saldo es de :"+ saldoActualizado + " euros";
+			if(it.hasNext()) {
+				Document documento = (Document) it.next();
+				cuentaBancaria = new CuentaBancaria(documento);
 				
-				collection.updateOne(Filters.eq("NumeroCuenta", nCuentas),
-						Updates.set("Saldo", saldoActualizado));
-			}else {
-				estado = "Inserte una cantidad valida";
-			}
+				if(retiro >= 0.0) {
+					saldoAnterior = cuentaBancaria.getSaldo();
+					saldoActualizado = saldoAnterior - retiro ;	
+					if(saldoActualizado <= 0) {
+						estado = "Se ha realizado un retiro de " + retiro + " euros." + "\n"
+								+ "Al numero de cuenta " + nCuentas + " el saldo total es de 0";
+						collection.updateOne(Filters.eq("NumeroCuenta", nCuentas),
+								Updates.set("Saldo", 0));
+					}else {
+						estado = "Se ha realizado un retiro  de " + retiro + " euros." + "\n"
+								+ "Al numero de cuenta " + nCuentas + " el saldo total es de "
+								+ saldoActualizado;
+						collection.updateOne(Filters.eq("NumeroCuenta", nCuentas),
+								Updates.set("Saldo", saldoActualizado));
+					}
+				}else {
+					estado= "Inserte una cantidad valida";
+				}
+			}	
 		}catch (Exception e) {
 			e.printStackTrace();
 			estado= "No ha podido realizarse el ingreso";
